@@ -311,6 +311,9 @@ export default async function PurchaseCatalogEntry(
         let quantity = commonCore.items["Currency:MtxPurchased"].quantity;
 
         let book_level: number = userProfiles.stats.attributes.book_level;
+        const isBattlePass =
+          catalogEntriesData.devName ===
+          `BR.Season${season?.season}.BattlePass.01`;
 
         const isBattleBundle =
           catalogEntriesData.devName ===
@@ -320,12 +323,12 @@ export default async function PurchaseCatalogEntry(
           `BR.Season${season?.season}.SingleTier.01`;
 
         let newLevel: number;
+        if (isBattlePass) {
+          newLevel = Math.min(book_level + 1, 100);
         if (isBattleBundle) {
           newLevel = Math.min(book_level + 25, 100);
         } else if (isSingleTier) {
           newLevel = Math.min(book_level + purchaseQuantity, 100);
-        } else {
-          newLevel = 1;
         }
 
         const EndingbookLevel = (userProfiles.stats.attributes.book_level =
